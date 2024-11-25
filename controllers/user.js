@@ -1,5 +1,6 @@
 const Users = require('../models/Users');
-const jwt = require('jsonwebtoken');
+// const jwt = require('jsonwebtoken');
+const jose = require('jose');
 
 const signIn = async (req, res) => {
   try {
@@ -10,10 +11,22 @@ const signIn = async (req, res) => {
       if (user.token !== null && user.token !== "") {
         token = user.token;
       } else {
-        token = jwt.sign(
-          { userId: user._id },
-          process.env.JWT_SECRET,
-        );
+        // token = jwt.sign(
+        //   { userId: user._id },
+        //   process.env.JWT_SECRET,
+        // );
+        const alg = 'HS256'
+
+        const secret = new TextEncoder().encode(
+          'process.env.JWT_SECRET',
+        )
+
+        token = await new jose.SignJWT({ 'urn:example:claim': true })
+          .setProtectedHeader({ alg })
+          .setIssuedAt()
+          .setIssuer('urn:example:issuer')
+          .setAudience('urn:example:audience')
+          .sign(secret)
       }
       await Users.findByIdAndUpdate(user._id, { token });
       res.json({ id: user._id, token, role: user.role });

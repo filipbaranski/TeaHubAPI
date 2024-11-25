@@ -1,5 +1,6 @@
 const Users = require('./models/Users');
-const jwt = require('jsonwebtoken');
+// const jwt = require('jsonwebtoken');
+const jose = require('jose');
 
 module.exports = () => {
   return async (req, res, next) => {
@@ -17,11 +18,13 @@ module.exports = () => {
     if (!token || token === 'null') {
       return res.status(401).send({error: 'No token in headers'});
     } else {
-      jwt.verify(token, process.env.JWT_SECRET, (error, decoded) => {
-        if (error) {
+      const { payload } = await jose.jwtVerify(token, new TextEncoder().encode(process.env.JWT_SECRET));
+      console.log(payload)
+      // jwt.verify(token, process.env.JWT_SECRET, (error, decoded) => {
+        if (!payload) {
           return res.status(401).send({error: 'Invalid token'});
         }
-      });
+      // });
       next();
     }
   }

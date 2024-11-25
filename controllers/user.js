@@ -18,7 +18,7 @@ const signIn = async (req, res) => {
         const alg = 'HS256'
 
         const secret = new TextEncoder().encode(
-          'process.env.JWT_SECRET',
+          process.env.JWT_SECRET,
         )
 
         token = await new jose.SignJWT({ 'urn:example:claim': true })

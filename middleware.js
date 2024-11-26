@@ -19,11 +19,11 @@ module.exports = () => {
     //---- other code
 
     //Preflight CORS handler
-    if (req.method === "OPTIONS") {
-      return res.status(200).json({
-        body: "OK",
-      });
-    }
+    // if (req.method === "OPTIONS") {
+    return res.status(200).json({
+      body: "OK",
+    });
+    // }
     const token = req.headers["bearer"];
     const id = req.headers["id"];
     const user = await Users.findOne({ _id: id });

@@ -15,6 +15,7 @@ main().catch((err) => console.log(err));
 async function main() {
   await mongoose.connect(process.env.DB_CONNECTION_URI);
 }
+router.get("/", (req, res) => res.send("Express on Vercel"));
 
 router.post("/signin", userController.signIn);
 router.get("/signout/:id", userController.signOut);

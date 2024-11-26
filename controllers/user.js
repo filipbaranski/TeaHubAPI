@@ -1,10 +1,13 @@
-const Users = require('../models/Users');
+const Users = require("../models/Users");
 // const jwt = require('jsonwebtoken');
-const jose = require('jose');
+const jose = require("jose");
 
 const signIn = async (req, res) => {
   try {
-    const user = await Users.findOne({ name: req.body.username, password: req.body.password });
+    const user = await Users.findOne({
+      name: req.body.username,
+      password: req.body.password,
+    });
     if (user === null) res.status(403).send();
     if (user !== null) {
       let token;
@@ -15,22 +18,20 @@ const signIn = async (req, res) => {
         //   { userId: user._id },
         //   process.env.JWT_SECRET,
         // );
-        const alg = 'HS256'
+        const alg = "HS256";
 
-        const secret = new TextEncoder().encode(
-          process.env.JWT_SECRET,
-        )
+        const secret = new TextEncoder().encode(process.env.JWT_SECRET);
 
-        token = await new jose.SignJWT({ 'urn:example:claim': true })
+        token = await new jose.SignJWT({ "urn:example:claim": true })
           .setProtectedHeader({ alg })
           .setIssuedAt()
-          .setIssuer('urn:example:issuer')
-          .setAudience('urn:example:audience')
-          .sign(secret)
+          .setIssuer("urn:example:issuer")
+          .setAudience("urn:example:audience")
+          .sign(secret);
       }
       await Users.findByIdAndUpdate(user._id, { token });
       res.json({ id: user._id, token, role: user.role });
-    };
+    }
   } catch (err) {
     res.status(500).send(err);
   }
@@ -38,7 +39,7 @@ const signIn = async (req, res) => {
 
 const signOut = async (req, res) => {
   try {
-    await Users.findByIdAndUpdate(req.params.id, { token: '' });
+    await Users.findByIdAndUpdate(req.params.id, { token: "" });
     res.res.sendStatus(200);
   } catch (err) {
     res.status(500).send(err);

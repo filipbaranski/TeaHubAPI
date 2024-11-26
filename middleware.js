@@ -25,7 +25,7 @@ module.exports = () => {
         token,
         new TextEncoder().encode(process.env.JWT_SECRET)
       );
-      console.log(payload);
+      // console.log(payload);
       // jwt.verify(token, process.env.JWT_SECRET, (error, decoded) => {
       if (!payload) {
         return res.status(401).send({ error: "Invalid token" });

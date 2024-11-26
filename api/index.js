@@ -4,14 +4,7 @@ const app = express();
 const routes = require("../routes");
 const cors = require("cors");
 
-app.use(
-  cors({
-    origin: "*",
-    methods: "GET,HEAD,PUT,PATCH,POST,DELETE",
-    preflightContinue: false,
-    optionsSuccessStatus: 204,
-  })
-);
+app.use(cors());
 app.use(express.json());
 app.use(routes);
 

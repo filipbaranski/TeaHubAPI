@@ -5,7 +5,6 @@ const UserSchema = mongoose.Schema(
     name: String,
     password: String,
     token: String,
-    role: String,
   },
   { collection: "Users" }
 );

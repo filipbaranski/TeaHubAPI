@@ -30,7 +30,7 @@ const signIn = async (req, res) => {
           .sign(secret);
       }
       await Users.findByIdAndUpdate(user._id, { token });
-      res.json({ id: user._id, token, role: user.role });
+      res.json({ id: user._id, token });
     }
   } catch (err) {
     res.status(500).send(err);
